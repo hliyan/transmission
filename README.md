@@ -4,6 +4,12 @@ Transmission is an event driven variant of the Flux front end architecture. For 
 
 # Introduction
 
-There is more than one way to think about *Transmission*. Here we will develop the understanding piecemeal.
+There is more than one way to think about *Transmission*. Here we will develop the thinking behind each layer of the architecture peacemeal.
 
-The basic idea is a completely logic-less, dumb front-end layer driven by an application "engine".
+---
+
+<p align="center"><img src="Transmission-FE1.svg" /></p>
+
+---
+
+<p align="center"><img src="Transmission-FE2.svg" /></p>
