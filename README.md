@@ -36,9 +36,26 @@ An "application engine" can listen to these events and use the following functio
 
 - updateTodoInputBox(text)
 - updateTodoList(list)
-- appendTodoToList(todo)
+- appendTodoInList(todo)
 - updateTodo(todo)
 - removeTodoFromList(id)
 
+### 4. How to drive the UI
 
+Here's a piece of sample code that illustrates how an "engine" can drive the UI by listening to user events and calling UI API functions.
+
+```javascript
+import UI from 'TodoUI';
+import mock from 'mocks';
+
+UI.addEventListener(UI.events.TODO_APP_LOADED, (e) => {
+  UI.updateTodoList(mock.todoList);
+});
+
+UI.addEventListener(UI.events.TODO_CHECKBOX_CLICKED, (e) => {
+  const todo = mocks.findTodo({id: e.id});
+  todo.status = todo.status === true ? false : true;
+  UI.appendTodoInList(todo);
+});
+```
 
