@@ -122,22 +122,58 @@ For example:
 
 // the component will only emit an event in response to a user action
 
-class AddTodoButton extends Component {
+class AddTodo extends Component {
   render() {
-    return <button data-todoid={this.props.todoId onClick={this.onClick}>+</button>
+    return (
+      <div data-todo-text={this.state.todoText} onClick={this.onClick}>
+        <input value={this.state.todoText} /> <button >+</button>
+      </div>);
   }
   
   onClick(e) {
-    emit(ADD_TODO_BUTTON_CLICKED, {todoId: e.target.dataset[todoid]});
+    this.emitter.emit(ADD_TODO_BUTTON_CLICKED, {todoText: e.currentTarget.dataset[todo-text]});
   }
   
   constructor(props) {
     super(props);
     this.onClick = this.onClick.bind(this);
+    this.emitter = new Emitter();
   }
 
 }
 
-//
+// something needs to listen to those events and tell it what to do
+
+UI.mount(document.getElementById('root'));
+
+UI.addEventListener(ADD_TODO_BUTTON_CLICKED, (e) => {
+  console.log(e.todoText);
+});
 
 ```
+
+Note that the event here is "fire-and-forget":
+
+```javascript
+  onClick(e) {
+    this.emitter.emit(ADD_TODO_BUTTON_CLICKED, {todoText: e.currentTarget.dataset[todo-text]});
+  }
+```
+
+The alternative would have been:
+
+```javascript
+  onClick(e) {
+    const res = await Engine.addTodo({todoText: e.todoText});
+    if (!res.error) {
+      this.updateTodoInputBox("");
+      this.appendTodoInList(res.todo);
+    }
+  }
+```
+
+There is no returned promise or callback. As far as the UI layer is concerned, that is the end of processing. The UI layer returns to a listening mode, waiting for either more user actions or a call to its UI API, telling it what to do. By doing this, we have achieved the following:
+
+1. Short execution paths
+2. UI layer is fully decoupled from the business/application layer -- it can effectively be developed by someone who has no knowedge of business logic.
+3. Our code follows basic sequence, iteration and selection: code executes in the sequence it is written, which makes it easier to read and reason about.
