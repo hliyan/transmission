@@ -1,4 +1,4 @@
-# Transmission (TX)
+# Transmission Archtecture (TX)
 
 Transmission is an event driven variant of the Flux front end architecture. For a more academic treatment of the motivation and the principles behind this architecture, read the [whitepaper](./Transmission-TX-A-new-Flux-architecture.pdf). For a more practical guide, continue reading.
 
@@ -61,9 +61,9 @@ UI.addEventListener(UI.events.TODO_CHECKBOX_CLICKED, (e) => {
 
 ### 5. Designing the internal state of the UI
 
-Remember: every state variable in the UI's store must directly correspond to something on screen. There shouldn't be any abstract/virtual states or business state there.
+Remember: every state variable in the UI's store must directly correspond to something on screen. There shouldn't be any abstract/virtual states or business state there. Such state belongs in the "engine".
 
-So always design the state by mimicking the visual structure.
+Always design the state by mimicking the visual structure.
 
 E.g.
 
@@ -83,4 +83,7 @@ app:
     - id: 1
       text: Buy milk
       completed: false
+    - id: 2
+      text: Write email
+      completed: true
 ```
