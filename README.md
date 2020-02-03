@@ -6,7 +6,8 @@ There is more than one way to think about *Transmission*. Here we will develop t
 
 ## Contents
 
-[The UI layer](#the-ui-layer)
+- [The UI layer](#the-ui-layer)
+- [Events not promises](#events-not-promises)
 
 
 ## The UI layer
@@ -110,3 +111,33 @@ function updateTodoInputBox(text) {
 ### 7. UI layer summary
 
 In summary, the UI layer of a Transmission application is a dumb, Mechanical-Turk-like shell that simply emit events in response to user actions. It expects some entity with business logic and data to listen to those events and tell it what to do using its UI manipulation API. This API does only one thing: change the state of variables within the UI layer that are wired directly to visual elements. These, taken together, constitutes the "UI layer" of the Transmission architecture.
+
+## Events not promises
+
+One very important aspect of Transmission is that it relies exclusively on *events* for asynchronous processing. That is, callbacks and promises are not used.
+
+For example:
+
+```javascript
+
+// the component will only emit an event in response to a user action
+
+class AddTodoButton extends Component {
+  render() {
+    return <button data-todoid={this.props.todoId onClick={this.onClick}>+</button>
+  }
+  
+  onClick(e) {
+    emit(ADD_TODO_BUTTON_CLICKED, {todoId: e.target.dataset[todoid]});
+  }
+  
+  constructor(props) {
+    super(props);
+    this.onClick = this.onClick.bind(this);
+  }
+
+}
+
+//
+
+```
