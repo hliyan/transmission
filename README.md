@@ -7,7 +7,8 @@ There is more than one way to think about *Transmission*. Here we will develop t
 ## Contents
 
 - [The UI layer](#the-ui-layer)
-- [Events not promises](#events-not-promises)
+- [Event model](#event-model)
+- [Engine](#engine)
 
 
 ## The UI layer
@@ -112,7 +113,9 @@ function updateTodoInputBox(text) {
 
 In summary, the UI layer of a Transmission application is a dumb, Mechanical-Turk-like shell that simply emit events in response to user actions. It expects some entity with business logic and data to listen to those events and tell it what to do using its UI manipulation API. This API does only one thing: change the state of variables within the UI layer that are wired directly to visual elements. These, taken together, constitutes the "UI layer" of the Transmission architecture.
 
-## Events not promises
+## Event model
+
+### 1. Events only; no promises, no callbacks
 
 One very important aspect of Transmission is that it relies exclusively on *events* for asynchronous processing. That is, callbacks and promises are not used.
 
@@ -177,3 +180,9 @@ There is no returned promise or callback. As far as the UI layer is concerned, t
 1. Short execution paths
 2. UI layer is fully decoupled from the business/application layer -- it can effectively be developed by someone who has no knowedge of business logic.
 3. Our code follows basic sequence, iteration and selection: code executes in the sequence it is written, which makes it easier to read and reason about.
+
+### 2. Discrete events
+
+Not virtual events like those emitted by EventEmitter. Actual discrete events in the JavaScript event queue. Achieved using either setTimeout or postMessage. Solves the problem the dispatcher tries to solve. Helps prevent re-entrant issues. Helps reduce UI stuttering.
+
+
