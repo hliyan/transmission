@@ -99,3 +99,7 @@ function updateTodoInputBox(text) {
   state.app.todoInputBox.text = text;
 }
 ```
+
+### 7. UI layer summary
+
+In summary, the UI layer of a Transmission application is a dumb, Mechanical-Turk-like shell that simply emit events in response to user actions. It expects some entity with business logic and data to listen to those events and tell it what to do using its UI manipulation API. This API does only one thing: change the state of variables within the UI layer that are wired directly to visual elements.
