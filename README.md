@@ -27,7 +27,7 @@ If you carefully think about every element and how it can interact with the end 
 Events fired by the UI layer:
 
 - TODO_APP_LOADED
-- TODO_INPUT_BOX_CHANGED
+- TODO_INPUT_BOX_EDITED
 - ADD_TODO_BUTTON_CLICKED
 - TODO_CHECKBOX_CLICKED
 - TODO_DELETE_BUTTON_CLICKED
@@ -86,4 +86,16 @@ app:
     - id: 2
       text: Write email
       completed: true
+```
+
+### 6. UI API manipulates UI by manipulating state
+
+In Redux, reducers listen to actions, determine the type of action and directly perform a series of operations on the UI state. It's similar in TX, except that the UI provides a set of APIs to perform those operations, rather than allowing direct variable access to the outside.
+
+E.g.
+
+```javascript
+function updateTodoInputBox(text) {
+  state.app.todoInputBox.text = text;
+}
 ```
