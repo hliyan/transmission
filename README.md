@@ -4,7 +4,14 @@ Transmission is an event driven variant of the Flux front end architecture. For 
 
 There is more than one way to think about *Transmission*. Here we will develop the thinking behind each layer of the architecture peacemeal.
 
-### 1. UI is a dumb shell
+## Contents
+
+[The UI layer](#the-ui-layer)
+
+
+## The UI layer
+
+### 1. The UI is a dumb shell
 
 UI layer is just a dumb, empty shell. It needs an "engine" to tell it what to do.
 
@@ -102,4 +109,4 @@ function updateTodoInputBox(text) {
 
 ### 7. UI layer summary
 
-In summary, the UI layer of a Transmission application is a dumb, Mechanical-Turk-like shell that simply emit events in response to user actions. It expects some entity with business logic and data to listen to those events and tell it what to do using its UI manipulation API. This API does only one thing: change the state of variables within the UI layer that are wired directly to visual elements.
+In summary, the UI layer of a Transmission application is a dumb, Mechanical-Turk-like shell that simply emit events in response to user actions. It expects some entity with business logic and data to listen to those events and tell it what to do using its UI manipulation API. This API does only one thing: change the state of variables within the UI layer that are wired directly to visual elements. These, taken together, constitutes the "UI layer" of the Transmission architecture.
