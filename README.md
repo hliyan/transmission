@@ -8,7 +8,7 @@ There is more than one way to think about *Transmission*. Here we will develop t
 
 - [The UI layer](#the-ui-layer)
 - [Event model](#event-model)
-- [Engine](#engine)
+- [Engine](#the-engine)
 
 
 ## The UI layer
@@ -185,4 +185,10 @@ There is no returned promise or callback. As far as the UI layer is concerned, t
 
 Not virtual events like those emitted by EventEmitter. Actual discrete events in the JavaScript event queue. Achieved using either setTimeout or postMessage. Solves the problem the dispatcher tries to solve. Helps prevent re-entrant issues. Helps reduce UI stuttering.
 
+## The Engine
 
+The engine encapsulates business state and business logic, but has zero coupling to the UI layer. 
+
+The idea is that the engine should be usable by *any* type of interface or application: GUI, command line, batch process, API -- anything.
+
+Also event driven -- does not return promises or provide callbacks. Emits events instead.
