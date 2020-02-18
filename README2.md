@@ -89,7 +89,7 @@ class ToDoView extends React.Component { // container component
   
   // state manipulation (therefore UI manipulation) API function
   appendTodoRow({text, completed}) {
-    this.setState(state => {todoList: state.todoList.push({text, completed}});
+    this.setState(state => {todoList: state.todoList.push({text, completed})});
   }
   
   updateTodoInputBox(text) {
