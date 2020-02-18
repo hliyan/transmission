@@ -1,5 +1,7 @@
 ## Writing a React app with vanilla JS, view models and event emitters (no Redux)
 
+Goal: low overhead, both for the JS runtime and the developer's brain.
+
 ```javascript
 const Todos = require("todo-service");
 
@@ -7,7 +9,7 @@ class ToDoView extends React.Component {
   constructor() {
     super();  // container component has only state, no props
     bindFunctionsStartingWith("on", this); // a util function
-    this.setState({ // state = WYSIWYG (only visual state, not business state)
+    this.state = { // state = WYSIWYG (variables are 1-to-1 modeling of what's seen on screen)
       title: "Simple Todo App",
       todoInputBox: {                          
         placeholderText: "Write todo here",
@@ -28,11 +30,12 @@ class ToDoView extends React.Component {
           completed: true
         }
        ]
-    });
+    };
   }
   
   render() {
     return (
+      // component structure is a 1-to-1 modeling of what's seen on screen
       <TodoContainer title={this.state.title}> // sub components have only props, no state
         <TodoInputForm>
           <TodoInputBox placeholder={this.state.todoInputBox.placeholderText} onChange={this.onChangeInputBox} />
@@ -49,11 +52,11 @@ class ToDoView extends React.Component {
   
   onTodoEvent(e) { // business events
     switch(e.type) {
-      case TODO_CREATED:
-        this.appendTodoRow({
+      case TODO_CREATED: // on business event
+        this.appendTodoRow({ // call a UI operation
           text: e.data.text,
           completed: e.data.completed
-        })
+        });
       break;
     }
   }
@@ -66,13 +69,16 @@ class ToDoView extends React.Component {
     this.updateTodoInputBox(e.target.text); // overwrites what's already typed, with the same value, so that state is kept in sync
   }
   
-  onClickAddButton(e) {
-    Todos.createTodo({
+  onClickAddButton(e) { // on UI event
+    Todos.createTodo({ // call a business operation
       text: this.getTodoInputBoxText()
-    });
+    }); // but don't wait on a promise; listen to the event instead (that way everyone gets the update, not just caller)
   }
   
-  
+  // state manipulation (therefore UI manipulation) API function
+  appendTodoRow({text, completed}) {
+    this.setState(state => {todoList: state.todoList.push({text, completed}});
+  }
   
 }
 ```
