@@ -8,8 +8,10 @@ const Todos = require("todo-service");
 class ToDoView extends React.Component { 
   constructor() {
     super();  // container component has only state, no props
-    bindFunctionsStartingWith("on", this); // a util function
-    this.state = { // state = WYSIWYG (variables are 1-to-1 modeling of what's seen on screen)
+    bindFunctionsStartingWith("on", this); // just a util function
+    
+    // state = WYSIWYG (variables are 1-to-1 modeling of what's seen on screen)
+    this.state = { 
       title: "Simple Todo App",
       todoInputBox: {                          
         placeholderText: "Write todo here",
@@ -50,6 +52,10 @@ class ToDoView extends React.Component {
     Todos.addEventListener(this.onTodoEvent);
   }
   
+  componentDidUnmount() { // don't receive events when unmounted
+    Todos.removeEventListener(this.onTodoEvent);
+  }
+  
   onTodoEvent(e) { // business events
     switch(e.type) {
       case TODO_CREATED: // on business event
@@ -59,10 +65,6 @@ class ToDoView extends React.Component {
         });
       break;
     }
-  }
-  
-  componentDidUnmount() { // don't receive events when unmounted
-    Todos.removeEventListener(this.onTodoEvent);
   }
   
   onChangeInputBox(e) {
@@ -78,6 +80,14 @@ class ToDoView extends React.Component {
   // state manipulation (therefore UI manipulation) API function
   appendTodoRow({text, completed}) {
     this.setState(state => {todoList: state.todoList.push({text, completed}});
+  }
+  
+  updateTodoInputBox(text) {
+    this.setState(state => { todoInputBox: {text} });
+  }
+  
+  getTodoInputBoxText() {
+    return this.state.todoInputBox.text;
   }
   
 }
